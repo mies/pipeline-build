@@ -34,20 +34,14 @@ release-build:
     - script:
         name: build release code
         code: |
-          npm run build
-          mv ./build/* $WERCKER_OUTPUT_DIR
+          env
 
-push-debug:
+push-dev:
   steps:
-    - internal/docker-push:
-        repository: quay.io/wercker/todo-demo-debug
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: quay.io
-        tag: $WERCKER_GIT_BRANCH
-        working-dir: /pipeline/source
-        cmd: npm start
-
+    - script:
+      name: pushing dev container
+      code: |
+        env
 push-release:
   box:
     id: nginx:alpine
@@ -63,12 +57,3 @@ push-release:
         name: cleanup build result
         code: |
           rm -rf *
-
-    - internal/docker-push:
-        disable-sync: true
-        repository: quay.io/wercker/todo-demo-release
-        username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
-        registry: quay.io
-        tag: $WERCKER_GIT_BRANCH
-        cmd: nginx -g 'daemon off;'
