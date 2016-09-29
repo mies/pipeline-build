@@ -36,13 +36,7 @@ release-build:
         code: |
           env
 
-push-dev:
-  steps:
-    - script:
-      name: pushing dev container
-      code: |
-        env
-push-release:
+push-gcr:
   box:
     id: nginx:alpine
     cmd: /bin/sh
@@ -57,3 +51,11 @@ push-release:
         name: cleanup build result
         code: |
           rm -rf *
+
+gke-deploy:
+    steps:
+      - script:
+          name: kube-deploy
+          code: |
+              sleep 3
+              env
